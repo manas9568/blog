@@ -1,0 +1,24 @@
+
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<h1>Login</h1>
+<form method="POST" action="{% url 'login-page' %}">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="{{ form.username.id_for_label }}">Username</label>
+    <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" class="form-control" value="{{ form.username.value }}" />
+  </div>
+  <div class="form-group">
+    <label for="{{ form.password.id_for_label }}">Password</label>
+    <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" class="form-control" value="{{ form.password.value }}" />
+  </div>
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="rememberMe">
+    <label class="form-check-label" for="rememberMe">Remember me</label>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
