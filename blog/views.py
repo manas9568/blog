@@ -3,7 +3,10 @@ from django.views.generic import DetailView
 from django.views.generic import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, get_object_or_404
+
+from blog.forms import CommentForm
 from .models import Category, Post, Comment
+from django.http import HttpResponseRedirect
 
 
 def blog_index(request):
@@ -30,12 +33,24 @@ def login_page(request):
 
 def blog_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    form = CommentForm()
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = Comment(
+                author=form.cleaned_data["author"],
+                body=form.cleaned_data["body"],
+                post=post,
+            )
+            comment.save()
+            return HttpResponseRedirect(request.path_info)
+
     comments = Comment.objects.filter(post=post)
     context = {
         "post": post,
         "comments": comments,
     }
-    return render(request, "blog/post_detail.html", context)
+    return render(request, "blog/about.html", context)
 
 
 def blog_category(request, category):
