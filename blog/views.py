@@ -49,6 +49,7 @@ def blog_detail(request, pk):
     context = {
         "post": post,
         "comments": comments,
+        "form": CommentForm(),
     }
     return render(request, "blog/about.html", context)
 
