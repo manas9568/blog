@@ -1,9 +1,10 @@
 # Create your views here.
-from django.views.generic import DetailView
+from django.views.generic import DetailView, CreateView
 from django.views.generic import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, get_object_or_404
 
+from blog.forms import PostForm
 from blog.forms import CommentForm
 from .models import Category, Post, Comment
 from django.http import HttpResponseRedirect
@@ -55,11 +56,37 @@ def blog_detail(request, pk):
 
 
 def blog_category(request, category):
-    posts = Post.objects.filter(categories_name_contains=Category).order_by(
-        "-created_on"
-    )
+    posts = Post.objects.filter(categories__name=category).order_by("-created_on")
     context = {
         "category": category,
         "posts": posts,
     }
     return render(request, "blog/category.html", context)
+
+
+def BlogPostCreateView(CreateView):
+    model = Post
+    template_name = "post.html"
+    fields = "__all__"
+
+
+#
+# def blog_post(request):
+#     post_form = PostForm()
+#     if request.method == "POST":
+#         form = PostForm(request.POST)
+#         if form.is_valid():
+#             post = Post(
+#                 title=form.cleaned_data["title"],
+#                 author=form.cleaned_data["author"],
+#                 body=form.cleaned_data["body"],
+#             )
+#             post.save()
+#
+#     context = {
+#         "post_form": post_form,
+#     }
+#     args = {}
+#     args["post_form"] = post_form
+#
+#     return render(request, "blog_post.html", args)

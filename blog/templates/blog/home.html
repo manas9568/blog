@@ -20,5 +20,9 @@
             </small>
             <p>{{ post.body | slice:":400" }}...</p>
         {% endfor %}
+
+        <a class="btn btn-primary" href="{% url 'blog_post' %}" role="button">Create a Post</a>
     {% endblock posts %}
 {% endblock page_content %}
+
+
